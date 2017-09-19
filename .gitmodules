@@ -1,3 +1,0 @@
-[submodule "3rdparty/scons-master"]
-	path = 3rdparty/scons-master
-	url = https://github.com/sconsproject/scons.git
