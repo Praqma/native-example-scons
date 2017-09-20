@@ -102,6 +102,14 @@ release_env.SharedLibrary(os.path.join(out_lib_dir,'mathy'), release_mathy_os)
 release_obj = release_env.Object(os.path.join(out_obj_dir,'main.o'), [os.path.join(project_dir,"src","main.cc")])
 release_env.Program(target = os.path.join(out_bin_dir,'main'), source = [release_obj, release_mathy_o])
 
+# # # Release Test Build Environment
+
+release_toggley_o = release_env.StaticObject(os.path.join(out_obj_dir,'toggley.o'), [os.path.join(project_dir,"src","toggley.cc")])
+release_env.StaticLibrary(os.path.join(out_lib_dir,'toggley'), release_toggley_o)
+
+test_sources = Glob(os.path.join(project_dir,"tst","*.c*"))
+release_env.Program(target = os.path.join(out_bin_dir,'test'), source = [test_sources, release_mathy_o, release_toggley_o])
+
 # # Debug Build Environment
 debug_env = environment.Clone()
 debug_env.AppendUnique(CPPDEFINES = ['DEBUG'])
