@@ -33,7 +33,7 @@ print "os.getcwd(): ", os.getcwd()
 project_dir = os.path.join(os.getcwd(),'omed-app')
 output_dir = os.path.join(os.getcwd(),'out')
 
-# Set our required libraries
+# Customized Paths
 libraries 		= []
 library_paths 	= [output_dir, os.path.join(output_dir,'lib')]  # ['/usr/lib', '/usr/local/lib']
 include_paths 	= [project_dir, os.path.join(project_dir,'inc')]
@@ -41,8 +41,7 @@ cppDefines 		= {}
 cppFlags 		= ['-Wall', '-Werror']
 cxxFlags 		= ['-std=c++11']
 
-# define the attributes of the build environment shared between
-# both the debug and release builds
+# Shared Construction Variables for both Release and Debug Environment
 environment = Environment()
 environment.Append(LIBS = libraries)
 environment.Append(LIBPATH = library_paths)
@@ -62,7 +61,6 @@ environment.AppendUnique(CCFLAGS = [
 									# '-Wwrite-strings'
 									] )
 environment.AppendUnique(CPPPATH = include_paths)
-
 
 print ""
 print "environment.Dump('CC'):", environment.Dump('CC')
@@ -87,7 +85,7 @@ for directory_name in [out_bin_dir, out_bin_dir, out_obj_dir]:
 	if Execute(Mkdir(directory_name)):
 		Exit(1) # Cannot make the directory.
 
-# # Our release build is derived from the common build environment...
+# # Release Build Environment
 release_env = environment.Clone()
 release_env.AppendUnique(CPPDEFINES = ['RELEASE'])
 release_env.AppendUnique(CCFLAGS = ['-O2'])
@@ -96,6 +94,7 @@ release_env.VariantDir('out/release', project_dir, duplicate=0)
 # release_env.StaticLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
 release_mathy_o = release_env.StaticObject(os.path.join(out_obj_dir,'mathy.o'), [os.path.join(project_dir,"src","mathy.cc")])
 release_env.StaticLibrary(os.path.join(out_lib_dir,'mathy'), release_mathy_o)
+
 # release_env.SharedLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
 release_mathy_os = release_env.SharedObject(os.path.join(out_obj_dir,'mathy.os'), [os.path.join(project_dir,"src","mathy.cc")])
 release_env.SharedLibrary(os.path.join(out_lib_dir,'mathy'), release_mathy_os)
@@ -103,7 +102,7 @@ release_env.SharedLibrary(os.path.join(out_lib_dir,'mathy'), release_mathy_os)
 release_obj = release_env.Object(os.path.join(out_obj_dir,'main.o'), [os.path.join(project_dir,"src","main.cc")])
 release_env.Program(target = os.path.join(out_bin_dir,'main'), source = [release_obj, release_mathy_o])
 
-# # We define our debug build environment in a similar fashion...
+# # Debug Build Environment
 debug_env = environment.Clone()
 debug_env.AppendUnique(CPPDEFINES = ['DEBUG'])
 debug_env.AppendUnique(CCFLAGS = ['-g'])
@@ -112,6 +111,7 @@ debug_env.VariantDir('out/debug', project_dir, duplicate=0)
 # debug_env.StaticLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
 debug_mathy_o = debug_env.StaticObject(os.path.join(out_obj_dir,'mathyd.o'), [os.path.join(project_dir,"src","mathy.cc")])
 debug_env.StaticLibrary(os.path.join(out_lib_dir,'mathyd'), debug_mathy_o)
+
 # debug_env.SharedLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
 debug_mathy_os = debug_env.SharedObject(os.path.join(out_obj_dir,'mathyd.os'), [os.path.join(project_dir,"src","mathy.cc")])
 debug_env.SharedLibrary(os.path.join(out_lib_dir,'mathyd'), debug_mathy_os)
