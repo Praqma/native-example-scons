@@ -1,0 +1,127 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:latest
+    working_directory: ~/sheeeng/omed-scons
+    steps:
+      - checkout
+      - run:
+          name: Interpolating Environment Variables to Set Other Environment Variables
+          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
+          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
+          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+      - run:
+          name: Update & Upgrade
+          command: |
+            set -x
+            sudo apt-get update
+            sudo apt-get upgrade
+      - run:
+          name: Check Version
+          command: |
+            set -x
+            go version
+      - run:
+          name: Setup Make Prerequisites
+          command: |
+            set -x
+            echo "Setup Make Prerequisites ..."
+            sudo apt-get install --yes build-essential
+            gcc --version
+      - run:
+          name: Get Submodule(s)
+          command: |
+            git submodule init
+            git submodule update
+      - run:
+          name: Setup
+          command: |
+            set -x
+            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+            python /tmp/get-pip.py --user
+            pip install --user pipenv
+            sudo apt-get install --yes scons
+            scons --version
+      - run:
+          name: Build
+          command: |
+            set -x
+            scons
+      - run:
+          name: Run
+          command: |
+            set -x
+            ${PWD}/out/bin/main
+      - store_artifacts:
+          path: out
+  test:
+    docker:
+      - image: circleci/golang:latest
+    working_directory: ~/sheeeng/omed-scons
+    steps:
+      - checkout
+      - run:
+          name: Interpolating Environment Variables to Set Other Environment Variables
+          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
+          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
+          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+      - run:
+          name: Update & Upgrade
+          command: |
+            set -x
+            sudo apt-get update
+            sudo apt-get upgrade
+      - run:
+          name: Check Version
+          command: |
+            set -x
+            go version
+      - run:
+          name: Setup Make Prerequisites
+          command: |
+            set -x
+            echo "Setup Make Prerequisites ..."
+            sudo apt-get install --yes build-essential
+            gcc --version
+      - run:
+          name: Get Submodule(s)
+          command: |
+            git submodule init
+            git submodule update
+      - run:
+          name: Setup
+          command: |
+            set -x
+            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+            python /tmp/get-pip.py --user
+            pip install --user pipenv
+            sudo apt-get install --yes scons
+            scons --version
+      - run:
+          name: Build
+          command: |
+            set -x
+            scons
+      - run:
+          name: Run
+          command: |
+            set -x
+            ${PWD}/out/bin/test
+      - store_artifacts:
+          path: out
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
