@@ -30,7 +30,7 @@ env = Environment()
 # ######################################################################
 
 print "os.getcwd(): ", os.getcwd()
-project_dir = os.path.join(os.getcwd(),'omed-app')
+project_dir = os.path.join(os.getcwd(),'native-app')
 output_dir = os.path.join(os.getcwd(),'out')
 
 # Customized Paths

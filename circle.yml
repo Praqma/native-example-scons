@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang:latest
-    working_directory: ~/sheeeng/omed-scons
+    working_directory: ~/praqma/native-example-scons
     steps:
       - checkout
       - run:
@@ -13,6 +13,7 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export PATH=~/.local/bin:$PATH' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |
@@ -60,7 +61,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:latest
-    working_directory: ~/sheeeng/omed-scons
+    working_directory: ~/praqma/native-example-scons
     steps:
       - checkout
       - run:
@@ -70,6 +71,7 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export PATH=~/.local/bin:$PATH' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |
