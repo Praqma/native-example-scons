@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:latest
-    working_directory: ~/praqma/native-example-scons
+      - image: praqma/native-scons:latest
+    working_directory: /workspace
     steps:
       - checkout
       - run:
@@ -13,55 +13,22 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
-            echo 'export PATH=~/.local/bin:$PATH' >> $BASH_ENV
+            echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
       - run:
-          name: Update & Upgrade
+          name: Version
           command: |
             set -x
-            sudo apt-get update
-            sudo apt-get upgrade
-      - run:
-          name: Check Version
-          command: |
-            set -x
-            go version
-      - run:
-          name: Setup Make Prerequisites
-          command: |
-            set -x
-            echo "Setup Make Prerequisites ..."
-            sudo apt-get install --yes build-essential
-            gcc --version
-      - run:
-          name: Get Submodule(s)
-          command: |
-            git submodule init
-            git submodule update
-      - run:
-          name: Setup
-          command: |
-            set -x
-            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-            python /tmp/get-pip.py --user
-            pip install --user pipenv
-            sudo apt-get install --yes scons
-            scons --version
+            cat /etc/*release
       - run:
           name: Build
           command: |
             set -x
-            scons
-      - run:
-          name: Run
-          command: |
-            set -x
-            ${PWD}/out/bin/main
-      - store_artifacts:
-          path: out
+            cd ${WORKSPACE_DIR}
+            bash ${PWD}/build.sh
   test:
     docker:
-      - image: circleci/golang:latest
-    working_directory: ~/praqma/native-example-scons
+      - image: praqma/native-scons:latest
+    working_directory: /workspace
     steps:
       - checkout
       - run:
@@ -71,51 +38,18 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
-            echo 'export PATH=~/.local/bin:$PATH' >> $BASH_ENV
+            echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
       - run:
-          name: Update & Upgrade
+          name: Version
           command: |
             set -x
-            sudo apt-get update
-            sudo apt-get upgrade
-      - run:
-          name: Check Version
-          command: |
-            set -x
-            go version
-      - run:
-          name: Setup Make Prerequisites
-          command: |
-            set -x
-            echo "Setup Make Prerequisites ..."
-            sudo apt-get install --yes build-essential
-            gcc --version
-      - run:
-          name: Get Submodule(s)
-          command: |
-            git submodule init
-            git submodule update
-      - run:
-          name: Setup
-          command: |
-            set -x
-            curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-            python /tmp/get-pip.py --user
-            pip install --user pipenv
-            sudo apt-get install --yes scons
-            scons --version
+            cat /etc/*release
       - run:
           name: Build
           command: |
             set -x
-            scons
-      - run:
-          name: Run
-          command: |
-            set -x
-            ${PWD}/out/bin/test
-      - store_artifacts:
-          path: out
+            cd ${WORKSPACE_DIR}
+            bash ${PWD}/build.sh
 workflows:
   version: 2
   build_and_test:
