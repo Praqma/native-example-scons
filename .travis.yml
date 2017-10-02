@@ -1,14 +1,23 @@
+sudo: required
+
+services:
+  - docker
+
 language: cpp
 
 compiler:
   - clang
   - gcc
 
+notifications:
+  email:
+    on_success: never # default: change
+    on_failure: change # default: always
+
 before_install:
-  - sudo apt-get update --quiet
-  - sudo apt-get install --yes build-essential
-  - sudo apt-get install --yes
+  - docker pull praqma/native-scons:latest
 
 script:
-  - clang --version
-  - gcc --version
+  - ls -al ${PWD}
+  - docker run --rm --workdir=/workspace --volume ${PWD}:/workspace praqma/native-scons:latest ./build.sh
+  - docker run --rm --workdir=/workspace --volume ${PWD}:/workspace praqma/native-scons:latest ./test.sh

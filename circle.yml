@@ -45,11 +45,11 @@ jobs:
             set -x
             cat /etc/*release
       - run:
-          name: Build
+          name: Test
           command: |
             set -x
             cd ${WORKSPACE_DIR}
-            bash ${PWD}/build.sh
+            bash ${PWD}/test.sh
 workflows:
   version: 2
   build_and_test:
