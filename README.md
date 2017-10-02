@@ -14,14 +14,12 @@ Building with [SCons](http://scons.org/).
 
 See [native](https://github.com/Praqma/native) repository for more examples.
 
-<!-- GitHub
+## Steps
 
-[![GitHub Stars](https://img.shields.io/github/stars/praqma/native-example-scons.svg?style=social&label=Star)](https://img.shields.io/github/stars/praqma/native-example-scons.svg?style=social&label=Star)
-[![GitHub Forks](https://img.shields.io/github/forks/praqma/native-example-scons.svg?style=social&label=Fork)](https://img.shields.io/github/forks/praqma/native-example-scons.svg?style=social&label=Fork)
-[![GitHub Watchers](https://img.shields.io/github/watchers/praqma/native-example-scons.svg?style=social&label=Watch)](https://img.shields.io/github/watchers/praqma/native-example-scons.svg?style=social&label=Watch)
-[![GitHub Tags](https://img.shields.io/github/tag/praqma/native-example-scons.svg)](https://img.shields.io/github/tag/praqma/native-example-scons.svg)
-[![GitHub Releases](https://img.shields.io/github/release/praqma/native-example-scons.svg)](https://img.shields.io/github/release/praqma/native-example-scons.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/praqma/native-example-scons.svg)](https://img.shields.io/github/issues/praqma/native-example-scons.svg) -->
+* Build image: `./dockerize.sh`
+* Run container: `./containerize.sh`
+* Build example (inside container): `./build.sh`
+* Test example (inside container): `./test.sh`
 
 ## Documentation
 
