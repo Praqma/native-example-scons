@@ -16,8 +16,8 @@ See [native](https://github.com/Praqma/native) repository for more examples.
 
 ## Steps
 
-* Build image: `./dockerize.sh`
-* Run container: `./containerize.sh`
+* Build image: `./docker-build.sh`
+* Run container: `./docker-run.sh`
 * Build example (inside container): `./build.sh`
 * Test example (inside container): `./test.sh`
 
