@@ -92,9 +92,9 @@ See [native](https://github.com/Praqma/native) repository for more examples.
 
 ## Lesson Learned
 
-1. Two Environments With Different Actions Were Specified For The Same Target
+* Two Environments With Different Actions Were Specified For The Same Target
 
-* If you use the below two lines together in a `SConstruct` file, the build would fail.
+If you use the below two lines together in a `SConstruct` file, the build would fail.
 
 ```
 release_env.SharedLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
@@ -102,7 +102,7 @@ release_env.SharedLibrary(target = 'mathy', source = [os.path.join(project_dir,"
 debug_env.SharedLibrary(target = 'mathy', source = [os.path.join(project_dir,"src","mathy.cc")])
 ```
 
-* Error
+Error:
 ```
 scons: *** Two environments with different actions were specified for the same target: omed-app/src/mathy.os
 (action 1: g++ -o mathy.os -c -Wall -Werror -std=c++11 -O2 -fPIC -DRELEASE mathy.cc)
@@ -110,7 +110,7 @@ scons: *** Two environments with different actions were specified for the same t
 File "/Users/leonard/github/omed-scons/SConstruct", line 184, in <module>
 ```
 
-* Workaround
+Workaround:
 ```
 release_mathy_os = release_env.SharedObject(os.path.join(out_obj_dir,'mathy.os'), [os.path.join(project_dir,"src","mathy.cc")])
 release_env.SharedLibrary(os.path.join(out_lib_dir,'mathy'), release_mathy_os)
