@@ -15,6 +15,7 @@ notifications:
     on_failure: change # default: always
 
 before_install:
+  - git submodule update --init
   - docker pull praqma/native-scons:latest
 
 script:

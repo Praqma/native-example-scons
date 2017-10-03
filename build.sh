@@ -11,8 +11,6 @@ if [ "$PWD" != "$WORKSPACE_DIR" ]; then
   exit 1
 fi
 
-git submodule update --init --force
-
 scons
 
 ${WORKSPACE_DIR}/out/bin/main
