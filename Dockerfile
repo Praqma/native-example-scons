@@ -4,6 +4,7 @@ RUN apt-get update \
   && apt-get install --yes \
   curl \
   build-essential \
+  git \
   scons
 
 RUN curl \
