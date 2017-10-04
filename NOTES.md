@@ -1,5 +1,9 @@
 # Notes
 
+## Steps
+
+* Build image: `./docker-build.sh`
+
 ## Documentation
 
 * Construction Variables
