@@ -1,7 +1,8 @@
-FROM openjdk:8
+FROM debian:latest
 
 RUN apt-get update \
   && apt-get install --yes \
+  curl \
   build-essential \
   scons
 
